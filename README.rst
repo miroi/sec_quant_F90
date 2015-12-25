@@ -1,12 +1,19 @@
- 
 Evaluator of second quantized operators strings
 ===============================================
 
-Miro Ilias 
+Second quantization strings evaluator implemented in pure Fortran 90.
 
- - Tel Aviv University, Tel Aviv, Israel,  2007
- - University of Zilina, Prievidza, Slovakia 2008
- - Matej Bel University, Banska Bystrica, Slovakia 2015
+Written by Miro Ilias 
+
+- Tel Aviv University, Tel Aviv, Israel,  2007
+- University of Zilina, Prievidza, Slovakia 2008
+- Matej Bel University, Banska Bystrica, Slovakia 2015
+
+The buildup scheme is from and depends on https://github.com/scisoft/autocmake .
+
+
+About the program
+-----------------
 
 Operators strings are based upon doubly linked list (DLL). 
 Consequently,
