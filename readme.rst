@@ -1,13 +1,18 @@
  
-DIRAC evaluator of second quantized operators strings
-=====================================================
+Evaluator of second quantized operators strings
+===============================================
 
-Miro Ilias, Tel Aviv 2007, Prievidza 2008
+Miro Ilias 
 
-Strings are based upon doubly linked list (DLL). Consequently,
+ - Tel Aviv University, Tel Aviv, Israel,  2007
+ - University of Zilina, Prievidza, Slovakia 2008
+ - Matej Bel University, Banska Bystrica, Slovakia 2015
+
+Operators strings are based upon doubly linked list (DLL). 
+Consequently,
 DLL of pointers ("head_cell") to each string is associated with the list of strings.
 
-Program is working with these data types:
+Program is working with these complex data types:
 
 -   string_member - for one member (operator, kronecker delta, indexed term)
 -   one_string - encapsulates bunch of "string_member"s
@@ -18,7 +23,7 @@ Program is working with these data types:
 Working examples:
 =================
 
-- Four operators:
+- Evaluating four operators:
 
 ::
  
@@ -28,7 +33,7 @@ Working examples:
  =  d_32 d_41 -  d_32 1+ 4 - d_42 d_31 + d_42 1+ 3 + d_31 2+ 4 - 2+ (d_41 - 1+ 4) 3 =
  =  d_32 d_41 -  d_32 1+ 4 - d_42 d_31 + d_42 1+ 3 + d_31 2+ 4 - d_41 2+ 3 +  2+ 1+ 4 3
 
-code:
+coded as:
 
 :: 
 
@@ -38,63 +43,6 @@ code:
  call Insert_SQOp_end(pos,o2)
  call Insert_SQOp_end(pos,o1)
  
-Program output:
----------------
-     .... *** string #  1
-
-*** printing  one string of   2 elements and with the attached factor     1.00000
-* individual elements in the string:
-   kronecker delta, indexes #:  3  2
-   kronecker delta, indexes #:  4  1
-
-     .... *** string #  2
-
-*** printing  one string of   3 elements and with the attached factor    -1.00000
-* individual elements in the string:
-   kronecker delta, indexes #:  3  2
-   sec.quant.oper. - index no  1 ,creation oper.
-   sec.quant.oper. - index no  4 ,anihilation oper.
-
-     .... *** string #  3
-
-*** printing  one string of   2 elements and with the attached factor    -1.00000
-* individual elements in the string:
-   kronecker delta, indexes #:  4  2
-   kronecker delta, indexes #:  3  1
-
-     .... *** string #  4
-
-*** printing  one string of   3 elements and with the attached factor     1.00000
-* individual elements in the string:
-   kronecker delta, indexes #:  4  2
-   sec.quant.oper. - index no  1 ,creation oper.
-   sec.quant.oper. - index no  3 ,anihilation oper.
-
-     .... *** string #  5
-
-*** printing  one string of   3 elements and with the attached factor     1.00000
-* individual elements in the string:
-   kronecker delta, indexes #:  3  1
-   sec.quant.oper. - index no  2 ,creation oper.
-   sec.quant.oper. - index no  4 ,anihilation oper.
-
-     .... *** string #  6
-
-*** printing  one string of   3 elements and with the attached factor    -1.00000
-* individual elements in the string:
-   kronecker delta, indexes #:  4  1
-   sec.quant.oper. - index no  2 ,creation oper.
-   sec.quant.oper. - index no  3 ,anihilation oper.
-
-     .... *** string #  7
-
-*** printing  one string of   4 elements and with the attached factor     1.00000
-* individual elements in the string:
-   sec.quant.oper. - index no  2 ,creation oper.
-   sec.quant.oper. - index no  1 ,creation oper.
-   sec.quant.oper. - index no  4 ,anihilation oper.
-   sec.quant.oper. - index no  3 ,anihilation oper.
-
 Another example:
 ----------------
 
@@ -121,30 +69,4 @@ coded as
  call Insert_IndxTerm_end(pos,Tia)
  call Insert_SQOp_end(pos,o3)
  call Insert_SQOp_end(pos,o4)
-
-Program output:
----------------
-
-  ***  print_all_strings: printing all strings  ***
-
-     .... *** string #  1
-
-*** printing  one string of   5 elements and with the attached factor     1.00000
-* individual elements in the string:
-   kronecker delta, indexes #:  2  3
-   indx.term (ID:2); # indexes:2 >> 4 3 label: Tia
-   indx.term (ID:1); # indexes:2 >> 1 2 label: h_pq
-   sec.quant.oper. - index no  1 general  creation operator
-   sec.quant.oper. - index no  4 occupied anihilation operator
-
-     .... *** string #  2
-
-*** printing  one string of   6 elements and with the attached factor    -1.00000
-* individual elements in the string:
-   indx.term (ID:2); # indexes:2 >> 4 3 label: Tia
-   indx.term (ID:1); # indexes:2 >> 1 2 label: h_pq
-   sec.quant.oper. - index no  1 general  creation operator
-   sec.quant.oper. - index no  3 virtual  creation operator
-   sec.quant.oper. - index no  2 general  anihilation operator
-   sec.quant.oper. - index no  4 occupied anihilation operator
 

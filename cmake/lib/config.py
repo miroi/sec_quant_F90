@@ -9,6 +9,15 @@ import sys
 import shutil
 
 
+def module_exists(module_name):
+    try:
+        __import__(module_name)
+    except ImportError:
+        return False
+    else:
+        return True
+
+
 def check_cmake_exists(cmake_command):
     """
     Check whether CMake is installed. If not, print
@@ -44,28 +53,60 @@ def setup_build_path(build_path):
         os.makedirs(build_path, 0o755)
 
 
+def test_adapt_cmake_command_to_platform():
+
+    cmake_command = "FC=foo CC=bar CXX=RABOOF cmake -DTHIS -DTHAT='this and that cmake' .."
+    res = adapt_cmake_command_to_platform(cmake_command, 'linux')
+    assert res == cmake_command
+    res = adapt_cmake_command_to_platform(cmake_command, 'win32')
+    assert res == "set FC=foo && set CC=bar && set CXX=RABOOF && cmake -DTHIS -DTHAT='this and that cmake' .."
+
+    cmake_command = "cmake -DTHIS -DTHAT='this and that cmake' .."
+    res = adapt_cmake_command_to_platform(cmake_command, 'linux')
+    assert res == cmake_command
+    res = adapt_cmake_command_to_platform(cmake_command, 'win32')
+    assert res == cmake_command
+
+
+def adapt_cmake_command_to_platform(cmake_command, platform):
+    """
+    Adapt CMake command to MS Windows platform.
+    """
+    if platform == 'win32':
+        pos = cmake_command.find('cmake')
+        s = ['set %s &&' % e for e in cmake_command[:pos].split()]
+        s.append(cmake_command[pos:])
+        return ' '.join(s)
+    else:
+        return cmake_command
+
+
 def run_cmake(command, build_path, default_build_path):
     """
     Execute CMake command.
     """
     topdir = os.getcwd()
     os.chdir(build_path)
-    p = subprocess.Popen(
-            command,
-            shell=True,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE
-        )
-    s = p.communicate()[0].decode('UTF-8')
+    p = subprocess.Popen(command,
+                         shell=True,
+                         stdin=subprocess.PIPE,
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE)
+    stdout_coded, stderr_coded = p.communicate()
+    stdout = stdout_coded.decode('UTF-8')
+    stderr = stderr_coded.decode('UTF-8')
+    if stderr:
+        sys.stderr.write(stderr)
+        sys.exit(1)
     # print cmake output to screen
-    print(s)
+    print(stdout)
     # write cmake output to file
     f = open('cmake_output', 'w')
-    f.write(s)
+    f.write(stdout)
     f.close()
     # change directory and return
     os.chdir(topdir)
-    if 'Configuring incomplete' in s:
+    if 'Configuring incomplete' in stdout:
         # configuration was not successful
         if (build_path == default_build_path):
             # remove build_path iff not set by the user
@@ -73,7 +114,7 @@ def run_cmake(command, build_path, default_build_path):
             shutil.rmtree(default_build_path)
     else:
         # configuration was successful
-        save_configure_command(sys.argv, build_path)
+        save_setup_command(sys.argv, build_path)
         print_build_help(build_path, default_build_path)
 
 
@@ -90,11 +131,11 @@ def print_build_help(build_path, default_build_path):
     print('   $ make')
 
 
-def save_configure_command(argv, build_path):
+def save_setup_command(argv, build_path):
     """
-    Save configure command to a file.
+    Save setup command to a file.
     """
-    file_name = os.path.join(build_path, 'configure_command')
+    file_name = os.path.join(build_path, 'setup_command')
     f = open(file_name, 'w')
     f.write(' '.join(argv[:]) + '\n')
     f.close()
@@ -114,6 +155,8 @@ def configure(root_directory, build_path, cmake_command, only_show):
         build_path = default_build_path
     if not only_show:
         setup_build_path(build_path)
+
+    cmake_command = adapt_cmake_command_to_platform(cmake_command, sys.platform)
 
     print('%s\n' % cmake_command)
     if only_show:

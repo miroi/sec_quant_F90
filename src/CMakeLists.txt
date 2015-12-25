@@ -1,14 +1,12 @@
-set(EXTERNAL_LIBS)
-
 set(FREE_FORTRAN_SOURCES
-    control_print.F90
-    evaluare_strings.F90
-    indexed_quantities.F90
-    kron_delta.F90
-    operators_string.F90
-    sec_quant_oper.F90
-    dynamic_string.F90
-    utils.F90
+    code/control_print.F90
+    code/evaluare_strings.F90
+    code/indexed_quantities.F90
+    code/kron_delta.F90
+    code/operators_string.F90
+    code/sec_quant_oper.F90
+    code/dynamic_string.F90
+    code/utils.F90
 )
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY
@@ -42,7 +40,11 @@ macro(compile_standalone _executable _source LIST_OF_EXECUTABLES)
     )
 endmacro()
 
-compile_standalone(secquant.x main.F90 "${LIST_OF_EXECUTABLES}")
+compile_standalone(example_1.x examples/main_1.F90 "${LIST_OF_EXECUTABLES}")
+compile_standalone(example_2.x examples/main_2.F90 "${LIST_OF_EXECUTABLES}")
+compile_standalone(example_3.x examples/main_3.F90 "${LIST_OF_EXECUTABLES}")
+compile_standalone(example_4.x examples/main_4.F90 "${LIST_OF_EXECUTABLES}")
+compile_standalone(example_5.x examples/main_5.F90 "${LIST_OF_EXECUTABLES}")
 
 foreach(
     EXECUTABLE
@@ -60,9 +62,5 @@ foreach(
         secquant
         ${EXTERNAL_LIBS}
         )
-
-    if(ENABLE_STATIC_LINKING)
-        target_link_libraries(${EXECUTABLE} ${NODYNEXPORT})
-    endif()
 
 endforeach()

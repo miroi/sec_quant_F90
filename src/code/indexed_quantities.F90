@@ -12,7 +12,6 @@ type indexed_term
 ! assigned unique ID, for instance 1 - Fij, 2 - Tij, 3 - Vpqrs, 4 - Tijab ... 
 integer :: id = -1
 ! ... store the selected name of undexed quantity (like T_ij^ab, F_pq,...)
-!character(len=20) :: it_name
 type(string), dimension(1) :: it_name
 ! ... number of indexes (2,4,6...) - must be even number
 integer :: nindx 
@@ -33,7 +32,9 @@ contains
 function make_it(id_in, nindx_in, it_name_in ) result(this)
 !----------------------------------------------------------------------------
 ! Returns ALLOCATED indexed quantity
-! Entering: 
+!
+! Entering parameters:
+!
 !   id_in      - quantity unique ID
 !   nindx_in   - quantity's number of indexes (even number)
 !   it_name_in - label string to be attached 
@@ -174,8 +175,8 @@ end subroutine cancel_it
 !&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 subroutine fill_indexes_array(this,indxs_array)
 !----------------------------------------------------------------------------
-!  Fills indexed term "this" indexes numbers from "array"
-!  entering integer array "indxs_array" contains indexes
+!  Fills indexed term "this" with indexes numbers from the "array"
+!  The entering integer array "indxs_array" contains integer indexes
 !----------------------------------------------------------------------------
 implicit none
 #include "priunit.h"
@@ -227,6 +228,7 @@ end subroutine fill_indexes_2
 subroutine fill_indexes_4(this,indx1,indx2,indx3,indx4)
 !----------------------------------------------------------------------------
 !
+!        fill four indexes of four-index quantity
 !
 !----------------------------------------------------------------------------
 implicit none
@@ -254,7 +256,7 @@ end subroutine fill_indexes_4
 subroutine print_it(this)
 !----------------------------------------------------------------------------
 !
-!        prints allocated scalar indexed quantity - all attributes
+!    prints allocated scalar indexed quantity with  all its attributes
 !
 !----------------------------------------------------------------------------
 implicit none

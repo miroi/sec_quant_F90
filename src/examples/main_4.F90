@@ -1,8 +1,7 @@
-Program TEST_SEC_QUANT
+Program TEST_SEC_QUANT_3
  use Operators_string
  use Evaluate_strings
 implicit none
-#include "priunit.h"
   type(KronDelta), pointer :: d_ij, d_ab
   type(SQOper), pointer :: i,j,a,b,o1,o2,o3,o4
   type(indexed_term), pointer :: Tia, h_pq, Tijab, Xib
@@ -135,4 +134,4 @@ implicit none
 ! write(6,*) "Deactivated for ifort compiler version lower than 10.1.015 "
 !#endif
 
-End Program TEST_SEC_QUANT
+End Program 
